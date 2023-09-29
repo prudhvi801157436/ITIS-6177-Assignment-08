@@ -226,39 +226,37 @@ app.put('/api/v1/updateAgent/:id', queryHandler, (req, res) => {
 app.patch('/api/v1/patchAgent/:id', queryHandler, (req, res) => {
     const agentId = req.params.id;
     const agentData = req.body;
-    const updateFields = {}; // Create an empty object to store fields to update.
-    const updateParams = []; // Create an array to store the parameters for the query.
+    const updateFields = {}; 
+    const updateParams = []; 
 
-    // Check if each field exists in the request body and add it to the updateFields object.
     if (agentData.AGENT_NAME) {
         updateFields.AGENT_NAME = agentData.AGENT_NAME;
-        updateParams.push(agentData.AGENT_NAME); // Add the parameter.
+        updateParams.push(agentData.AGENT_NAME); 
     }
     if (agentData.WORKING_AREA) {
         updateFields.WORKING_AREA = agentData.WORKING_AREA;
-        updateParams.push(agentData.WORKING_AREA); // Add the parameter.
+        updateParams.push(agentData.WORKING_AREA); 
     }
     if (agentData.COMMISSION) {
         updateFields.COMMISSION = agentData.COMMISSION;
-        updateParams.push(agentData.COMMISSION); // Add the parameter.
+        updateParams.push(agentData.COMMISSION); 
     }
     if (agentData.PHONE_NO) {
         updateFields.PHONE_NO = agentData.PHONE_NO;
-        updateParams.push(agentData.PHONE_NO); // Add the parameter.
+        updateParams.push(agentData.PHONE_NO); 
     }
     if (agentData.COUNTRY) {
         updateFields.COUNTRY = agentData.COUNTRY;
-        updateParams.push(agentData.COUNTRY); // Add the parameter.
+        updateParams.push(agentData.COUNTRY); 
     }
 
     if (Object.keys(updateFields).length === 0) {
-        // If no fields to update are provided, respond with a 400 Bad Request.
         res.status(400).send('No valid fields to update.');
         return;
     }
 
     const updateQuery = 'UPDATE agents SET ' + Object.keys(updateFields).map(field => `${field} = ?`).join(', ') + ' WHERE AGENT_CODE = ?';
-    updateParams.push(agentId); // Add the parameter for the WHERE clause.
+    updateParams.push(agentId); 
 
     req.dbConnection.query(updateQuery, updateParams)
         .then(() => {
